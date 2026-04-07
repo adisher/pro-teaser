@@ -1,475 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>adilsher.pro</title>
-<meta name="description" content="Not ready yet. But almost." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet" />
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg:       #0d0d0b;
-    --paper:    #ece8df;       /* headline, primary text */
-    --body:     #b0aca4;       /* body text — readable, not harsh */
-    --subtle:   #787470;       /* labels, captions — still legible */
-    --faint:    rgba(236,232,223,0.06);
-    --rule:     rgba(236,232,223,0.1);
-    --accent:   #c44a2c;
-    --serif:    'Cormorant Garamond', Georgia, serif;
-    --mono:     'IBM Plex Mono', 'Courier New', monospace;
-  }
-
-  html, body { height: 100%; }
-
-  body {
-    background: var(--bg);
-    color: var(--paper);
-    font-family: var(--mono);
-    font-weight: 300;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-
-  /* grain overlay */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 100;
-  }
-
-  /* ambient warm glow top-right */
-  body::before {
-    content: '';
-    position: fixed;
-    top: -15%;
-    right: -8%;
-    width: 50vw;
-    height: 50vw;
-    background: radial-gradient(ellipse, rgba(196,74,44,0.05) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ── Header ── */
-  header {
-    position: relative;
-    z-index: 1;
-    padding: 1.75rem 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .logo {
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    font-weight: 400;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--subtle);
-    text-decoration: none;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--subtle);
-  }
-
-  .blink {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: blink 2s step-end infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0; }
-  }
-
-  /* ── Main ── */
-  main {
-    position: relative;
-    z-index: 1;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 4rem 2.5rem 3.5rem;
-    max-width: 660px;
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  .pre-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.75rem;
-    opacity: 0;
-    animation: up 0.6s ease 0.1s forwards;
-  }
-
-  /* Headline: serif, capped at 3.25rem so it never overwhelms */
-  h1 {
-    font-family: var(--serif);
-    font-size: clamp(2.25rem, 5vw, 3.25rem);
-    font-weight: 400;
-    line-height: 1.08;
-    letter-spacing: 0.01em;
-    color: var(--paper);
-    margin-bottom: 0.2rem;
-    opacity: 0;
-    animation: up 0.7s ease 0.25s forwards;
-  }
-
-  .but-almost {
-    font-family: var(--serif);
-    font-size: clamp(2.25rem, 5vw, 3.25rem);
-    font-weight: 400;
-    font-style: italic;
-    line-height: 1.08;
-    /* muted but still legible — not invisible */
-    color: rgba(236, 232, 223, 0.45);
-    margin-bottom: 2.25rem;
-    opacity: 0;
-    animation: up 0.7s ease 0.38s forwards;
-  }
-
-  /* tick rule */
-  .ticks {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 2rem;
-    opacity: 0;
-    animation: fadein 0.6s ease 0.52s forwards;
-  }
-
-  .tick { width: 1px; background: var(--subtle); opacity: 0.5; }
-  .tick:nth-child(1)  { height: 16px; }
-  .tick:nth-child(2)  { height: 10px; }
-  .tick:nth-child(3)  { height: 20px; }
-  .tick:nth-child(4)  { height: 8px;  }
-  .tick:nth-child(5)  { height: 14px; }
-  .tick:nth-child(6)  { height: 18px; }
-  .tick:nth-child(7)  { height: 11px; }
-  .tick:nth-child(8)  { height: 20px; }
-  .tick:nth-child(9)  { height: 13px; }
-  .tick:nth-child(10) { height: 16px; }
-
-  /* Body text: --body color, 0.85rem, proper contrast */
-  .sub {
-    font-size: 0.85rem;
-    color: var(--body);
-    line-height: 1.8;
-    max-width: 400px;
-    margin-bottom: 2.5rem;
-    opacity: 0;
-    animation: fadein 0.7s ease 0.6s forwards;
-  }
-
-  /* ── Form ── */
-  .form-block {
-    opacity: 0;
-    animation: fadein 0.7s ease 0.72s forwards;
-  }
-
-  .form-caption {
-    font-size: 0.65rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--subtle);
-    margin-bottom: 0.6rem;
-  }
-
-  .input-row {
-    display: flex;
-    max-width: 420px;
-    border: 1px solid var(--rule);
-    transition: border-color 0.2s;
-  }
-
-  .input-row:focus-within { border-color: rgba(236,232,223,0.3); }
-
-  .input-row input {
-    flex: 1;
-    min-width: 0;
-    background: transparent;
-    border: none;
-    outline: none;
-    padding: 0.78rem 1rem;
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    font-weight: 300;
-    color: var(--paper);
-    letter-spacing: 0.02em;
-  }
-
-  .input-row input::placeholder { color: rgba(236,232,223,0.22); }
-
-  .input-row button {
-    flex-shrink: 0;
-    background: transparent;
-    border: none;
-    border-left: 1px solid var(--rule);
-    padding: 0.78rem 1.1rem;
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    font-weight: 400;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--body);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: color 0.2s, background 0.2s;
-  }
-
-  .input-row button:hover   { color: var(--paper); background: var(--faint); }
-  .input-row button:disabled { opacity: 0.3; cursor: not-allowed; }
-
-  .msg {
-    display: none;
-    font-size: 0.72rem;
-    margin-top: 0.7rem;
-    letter-spacing: 0.04em;
-    line-height: 1.6;
-  }
-  .msg.success { display: block; color: #85c49a; }
-  .msg.error   { display: block; color: #d4796a; }
-
-  /* ── Fragments ── */
-  .fragments {
-    margin-top: 3.5rem;
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--rule);
-    opacity: 0;
-    animation: fadein 0.7s ease 0.9s forwards;
-  }
-
-  .frag-label {
-    font-size: 0.62rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--subtle);
-    margin-bottom: 1rem;
-  }
-
-  .frag-list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem 1.5rem;
-  }
-
-  .frag-list li {
-    font-size: 0.75rem;       /* bigger than before — actually readable */
-    color: var(--body);
-    letter-spacing: 0.03em;
-    position: relative;
-    padding-left: 1rem;
-  }
-
-  .frag-list li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-size: 0.65rem;
-  }
-
-  /* ── Footer ── */
-  footer {
-    position: relative;
-    z-index: 1;
-    padding: 1.25rem 2.5rem;
-    border-top: 1px solid var(--rule);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .foot-copy {
-    font-size: 0.65rem;
-    color: var(--subtle);
-    letter-spacing: 0.05em;
-  }
-
-  .foot-links { display: flex; gap: 1.25rem; }
-
-  .foot-links a {
-    font-size: 0.65rem;
-    color: var(--subtle);
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .foot-links a:hover { color: var(--paper); }
-
-  /* ── Animations ── */
-  @keyframes up {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  /* ── Mobile ── */
-  @media (max-width: 500px) {
-    header, main, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
-    main { padding-top: 3rem; padding-bottom: 3rem; }
-    .input-row { flex-direction: column; }
-    .input-row button {
-      border-left: none;
-      border-top: 1px solid var(--rule);
-      text-align: left;
-      padding-left: 1rem;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>adilsher.pro</title>
+  <meta name="description" content="Not ready yet. But almost." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .foot-links { display: none; }
-  }
-</style>
+
+    :root {
+      --bg: #0f0f0e;
+      --paper: #f0ede8;
+      /* primary text — warm white, easy on eyes */
+      --body: #9e9b97;
+      /* body copy — clearly readable */
+      --subtle: #5e5c59;
+      /* labels/captions — readable, not straining */
+      --rule: rgba(240, 237, 232, 0.1);
+      --faint: rgba(240, 237, 232, 0.05);
+      --accent: #c0392b;
+      --sans: 'Inter', system-ui, sans-serif;
+      --serif: 'Fraunces', Georgia, serif;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--paper);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* grain */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* ── Header ── */
+    header {
+      position: relative;
+      z-index: 1;
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .logo {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--paper);
+      text-decoration: none;
+      opacity: 0.7;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--subtle);
+      letter-spacing: 0.01em;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: blink 2s step-end infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* ── Main ── */
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 2.5rem 3.5rem;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: up 0.5s ease 0.1s forwards;
+    }
+
+    /* Headline: Fraunces serif, clear size, proper weight */
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5.5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      color: var(--paper);
+      margin-bottom: 0.15rem;
+      opacity: 0;
+      animation: up 0.6s ease 0.22s forwards;
+    }
+
+    .but-almost {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5.5vw, 3.5rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.12;
+      color: var(--body);
+      /* --body not faint — actually readable */
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: up 0.6s ease 0.34s forwards;
+    }
+
+    /* divider line */
+    .divider {
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadein 0.5s ease 0.46s forwards;
+    }
+
+    /* Body copy */
+    .sub {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--body);
+      line-height: 1.75;
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadein 0.5s ease 0.54s forwards;
+    }
+
+    /* ── Form ── */
+    .form-block {
+      opacity: 0;
+      animation: fadein 0.5s ease 0.64s forwards;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-bottom: 0.6rem;
+    }
+
+    .input-row {
+      display: flex;
+      max-width: 420px;
+      border: 1px solid rgba(240, 237, 232, 0.14);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+      background: rgba(240, 237, 232, 0.03);
+    }
+
+    .input-row:focus-within {
+      border-color: rgba(240, 237, 232, 0.3);
+    }
+
+    .input-row input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0.75rem 1rem;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--paper);
+    }
+
+    .input-row input::placeholder {
+      color: rgba(240, 237, 232, 0.2);
+    }
+
+    .input-row button {
+      flex-shrink: 0;
+      background: transparent;
+      border: none;
+      border-left: 1px solid rgba(240, 237, 232, 0.1);
+      padding: 0.75rem 1.1rem;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--body);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.2s, background 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .input-row button:hover {
+      color: var(--paper);
+      background: var(--faint);
+    }
+
+    .input-row button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .msg {
+      display: none;
+      font-size: 13px;
+      margin-top: 0.65rem;
+      line-height: 1.5;
+    }
+
+    .msg.success {
+      display: block;
+      color: #6dbb8a;
+    }
+
+    .msg.error {
+      display: block;
+      color: #d4726a;
+    }
+
+    /* ── What's coming ── */
+    .coming {
+      margin-top: 3.5rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--rule);
+      opacity: 0;
+      animation: fadein 0.5s ease 0.8s forwards;
+    }
+
+    .coming-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-bottom: 1rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--body);
+      padding: 0.3rem 0.75rem;
+      border: 1px solid rgba(240, 237, 232, 0.1);
+      border-radius: 4px;
+      letter-spacing: 0.01em;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .tag:hover {
+      border-color: rgba(240, 237, 232, 0.25);
+      color: var(--paper);
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 1.25rem 2.5rem;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .foot-copy {
+      font-size: 12px;
+      color: var(--subtle);
+      letter-spacing: 0.01em;
+    }
+
+    .foot-links {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .foot-links a {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--subtle);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+
+    .foot-links a:hover {
+      color: var(--paper);
+    }
+
+    /* ── Animations ── */
+    @keyframes up {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadein {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 520px) {
+
+      header,
+      main,
+      footer {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+
+      main {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+      }
+
+      .input-row {
+        flex-direction: column;
+        border-radius: 6px;
+      }
+
+      .input-row button {
+        border-left: none;
+        border-top: 1px solid rgba(240, 237, 232, 0.1);
+        text-align: left;
+        border-radius: 0;
+      }
+
+      .foot-links {
+        display: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header>
-  <a class="logo" href="/">adilsher.pro</a>
-  <div class="header-right">
-    <span class="blink"></span>
-    <span>Not yet</span>
-  </div>
-</header>
-
-<main>
-  <p class="pre-label">Status update</p>
-
-  <h1>Not ready yet.</h1>
-  <p class="but-almost">But almost.</p>
-
-  <div class="ticks">
-    <div class="tick"></div><div class="tick"></div><div class="tick"></div>
-    <div class="tick"></div><div class="tick"></div><div class="tick"></div>
-    <div class="tick"></div><div class="tick"></div><div class="tick"></div>
-    <div class="tick"></div>
-  </div>
-
-  <p class="sub">
-    Something's being built here. A portfolio, a blog,<br />
-    some indie projects, and a sports corner<br />
-    that has no business existing — but will anyway.
-  </p>
-
-  <div class="form-block">
-    <p class="form-caption">Tell me when it's done</p>
-    <div class="input-row">
-      <input
-        id="email-input"
-        type="email"
-        placeholder="your@email.com"
-        autocomplete="email"
-        spellcheck="false"
-      />
-      <button id="submit-btn" type="button">Notify me</button>
+  <header>
+    <a class="logo" href="/">adilsher.pro</a>
+    <div class="status">
+      <span class="dot"></span>
+      <span>In progress</span>
     </div>
-    <p class="msg success" id="msg-ok">&#10003;&nbsp; Noted. You'll hear from me.</p>
-    <p class="msg error"   id="msg-err">Something went wrong. Try again.</p>
-  </div>
+  </header>
 
-  <div class="fragments">
-    <p class="frag-label">Fragments of what's coming</p>
-    <ul class="frag-list">
-      <li>Case studies</li>
-      <li>Indie projects</li>
-      <li>Dev writing</li>
-      <li>Sports corner</li>
-      <li>Open source</li>
-    </ul>
-  </div>
-</main>
+  <main>
+    <p class="eyebrow">Status update</p>
 
-<footer>
-  <p class="foot-copy">&copy; 2025 Adil Sher &mdash; Islamabad, PK.</p>
-  <nav class="foot-links">
-    <a href="https://github.com/adisher" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://linkedin.com/in/adilsher" target="_blank" rel="noopener">LinkedIn</a>
-  </nav>
-</footer>
+    <h1>Not ready yet.</h1>
+    <p class="but-almost">But almost.</p>
 
-<script>
-  const input = document.getElementById('email-input');
-  const btn   = document.getElementById('submit-btn');
-  const ok    = document.getElementById('msg-ok');
-  const err   = document.getElementById('msg-err');
+    <div class="divider"></div>
 
-  function validEmail(v) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
-  }
+    <p class="sub">
+      Something's being built here — a portfolio, a blog,
+      some indie projects, and a sports corner that has
+      no business existing but will anyway.
+    </p>
 
-  btn.addEventListener('click', async () => {
-    ok.style.display  = 'none';
-    err.style.display = 'none';
+    <div class="form-block">
+      <label class="form-label" for="email-input">Get notified when it's live</label>
+      <div class="input-row">
+        <input id="email-input" type="email" placeholder="your@email.com" autocomplete="email" spellcheck="false" />
+        <button id="submit-btn" type="button">Notify me</button>
+      </div>
+      <p class="msg success" id="msg-ok">&#10003; Noted. You'll hear from me.</p>
+      <p class="msg error" id="msg-err">Something went wrong. Try again.</p>
+    </div>
 
-    const email = input.value.trim();
-    if (!validEmail(email)) {
-      err.textContent = "That doesn't look like a valid email.";
-      err.style.display = 'block';
-      input.focus();
-      return;
+    <div class="coming">
+      <p class="coming-label">What's coming</p>
+      <div class="tags">
+        <span class="tag">Case studies</span>
+        <span class="tag">Indie projects</span>
+        <span class="tag">Dev writing</span>
+        <span class="tag">Sports corner</span>
+        <span class="tag">Open source</span>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p class="foot-copy">&copy; 2025 Adil Sher &mdash; Islamabad, PK.</p>
+    <nav class="foot-links">
+      <a href="https://github.com/adisher" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/adilsher" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+  </footer>
+
+  <script>
+    const input = document.getElementById('email-input');
+    const btn = document.getElementById('submit-btn');
+    const ok = document.getElementById('msg-ok');
+    const err = document.getElementById('msg-err');
+
+    function validEmail(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
     }
 
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
+    btn.addEventListener('click', async () => {
+      ok.style.display = 'none';
+      err.style.display = 'none';
 
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
+      const email = input.value.trim();
+      if (!validEmail(email)) {
+        err.textContent = "That doesn't look like a valid email.";
+        err.style.display = 'block';
+        input.focus();
+        return;
+      }
 
-      if (res.ok) {
-        ok.style.display = 'block';
-        input.value = '';
-        btn.textContent = 'Done';
-      } else {
-        const data = await res.json().catch(() => ({}));
-        err.textContent = data.error || 'Something went wrong. Try again.';
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+
+        if (res.ok) {
+          ok.style.display = 'block';
+          input.value = '';
+          btn.textContent = 'Done';
+        } else {
+          const data = await res.json().catch(() => ({}));
+          err.textContent = data.error || 'Something went wrong. Try again.';
+          err.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Notify me';
+        }
+      } catch {
+        err.textContent = 'Network error. Check your connection.';
         err.style.display = 'block';
         btn.disabled = false;
         btn.textContent = 'Notify me';
       }
-    } catch {
-      err.textContent = 'Network error. Check your connection.';
-      err.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Notify me';
-    }
-  });
+    });
 
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
-</script>
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
+  </script>
 </body>
+
 </html>
