@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>adilsher.pro</title>
-  <meta name="description" content="Not ready yet. But almost." />
+  <meta name="description" content="Be the first to try what I'm building." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -23,11 +23,8 @@
     :root {
       --bg: #0f0f0e;
       --paper: #f0ede8;
-      /* primary text — warm white, easy on eyes */
       --body: #9e9b97;
-      /* body copy — clearly readable */
       --subtle: #5e5c59;
-      /* labels/captions — readable, not straining */
       --rule: rgba(240, 237, 232, 0.1);
       --faint: rgba(240, 237, 232, 0.05);
       --accent: #c0392b;
@@ -52,7 +49,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* grain */
     body::after {
       content: '';
       position: fixed;
@@ -62,7 +58,6 @@
       z-index: 100;
     }
 
-    /* ── Header ── */
     header {
       position: relative;
       z-index: 1;
@@ -88,9 +83,7 @@
       align-items: center;
       gap: 7px;
       font-size: 12px;
-      font-weight: 400;
       color: var(--subtle);
-      letter-spacing: 0.01em;
     }
 
     .dot {
@@ -113,7 +106,6 @@
       }
     }
 
-    /* ── Main ── */
     main {
       position: relative;
       z-index: 1;
@@ -138,7 +130,6 @@
       animation: up 0.5s ease 0.1s forwards;
     }
 
-    /* Headline: Fraunces serif, clear size, proper weight */
     h1 {
       font-family: var(--serif);
       font-size: clamp(2.4rem, 5.5vw, 3.5rem);
@@ -151,20 +142,18 @@
       animation: up 0.6s ease 0.22s forwards;
     }
 
-    .but-almost {
+    .sub-headline {
       font-family: var(--serif);
       font-size: clamp(2.4rem, 5.5vw, 3.5rem);
       font-weight: 300;
       font-style: italic;
       line-height: 1.12;
       color: var(--body);
-      /* --body not faint — actually readable */
       margin-bottom: 2.5rem;
       opacity: 0;
       animation: up 0.6s ease 0.34s forwards;
     }
 
-    /* divider line */
     .divider {
       width: 32px;
       height: 1px;
@@ -174,8 +163,7 @@
       animation: fadein 0.5s ease 0.46s forwards;
     }
 
-    /* Body copy */
-    .sub {
+    .desc {
       font-size: 15px;
       font-weight: 300;
       color: var(--body);
@@ -246,7 +234,6 @@
       cursor: pointer;
       white-space: nowrap;
       transition: color 0.2s, background 0.2s;
-      letter-spacing: 0.01em;
     }
 
     .input-row button:hover {
@@ -259,24 +246,45 @@
       cursor: not-allowed;
     }
 
+    /* ── Messages ── */
+    .msg-stack {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
     .msg {
       display: none;
       font-size: 13px;
-      margin-top: 0.65rem;
       line-height: 1.5;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    .msg.success {
+    .msg.show {
       display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .msg-primary {
       color: #6dbb8a;
+      font-weight: 500;
+      font-size: 14px;
     }
 
-    .msg.error {
-      display: block;
+    .msg-secondary {
+      color: var(--body);
+      font-weight: 300;
+    }
+
+    .msg-error {
       color: #d4726a;
     }
 
-    /* ── What's coming ── */
+    /* ── Coming section ── */
     .coming {
       margin-top: 3.5rem;
       padding-top: 1.75rem;
@@ -307,7 +315,6 @@
       padding: 0.3rem 0.75rem;
       border: 1px solid rgba(240, 237, 232, 0.1);
       border-radius: 4px;
-      letter-spacing: 0.01em;
       transition: border-color 0.2s, color 0.2s;
     }
 
@@ -332,7 +339,6 @@
     .foot-copy {
       font-size: 12px;
       color: var(--subtle);
-      letter-spacing: 0.01em;
     }
 
     .foot-links {
@@ -342,10 +348,8 @@
 
     .foot-links a {
       font-size: 12px;
-      font-weight: 400;
       color: var(--subtle);
       text-decoration: none;
-      letter-spacing: 0.01em;
       transition: color 0.2s;
     }
 
@@ -353,7 +357,6 @@
       color: var(--paper);
     }
 
-    /* ── Animations ── */
     @keyframes up {
       from {
         opacity: 0;
@@ -376,7 +379,6 @@
       }
     }
 
-    /* ── Mobile ── */
     @media (max-width: 520px) {
 
       header,
@@ -400,7 +402,7 @@
         border-left: none;
         border-top: 1px solid rgba(240, 237, 232, 0.1);
         text-align: left;
-        border-radius: 0;
+        padding-left: 1rem;
       }
 
       .foot-links {
@@ -421,27 +423,31 @@
   </header>
 
   <main>
-    <p class="eyebrow">Status update</p>
+    <p class="eyebrow">Early access</p>
 
-    <h1>Not ready yet.</h1>
-    <p class="but-almost">But almost.</p>
+    <h1>Be the first to try</h1>
+    <p class="sub-headline">what I'm building.</p>
 
     <div class="divider"></div>
 
-    <p class="sub">
-      Something's being built here — a portfolio, a blog,
-      some indie projects, and a sports corner that has
-      no business existing but will anyway.
+    <p class="desc">
+      A portfolio, a blog, some indie projects, and a sports corner
+      that has no business existing. But will anyway.
+      Drop your email and you're first in line.
     </p>
 
     <div class="form-block">
-      <label class="form-label" for="email-input">Get notified when it's live</label>
+      <label class="form-label" for="email-input">Your email</label>
       <div class="input-row">
         <input id="email-input" type="email" placeholder="your@email.com" autocomplete="email" spellcheck="false" />
-        <button id="submit-btn" type="button">Notify me</button>
+        <button id="submit-btn" type="button">I'm in</button>
       </div>
-      <p class="msg success" id="msg-ok">&#10003; Noted. You'll hear from me.</p>
-      <p class="msg error" id="msg-err">Something went wrong. Try again.</p>
+
+      <div class="msg-stack">
+        <p class="msg msg-primary" id="msg-primary"></p>
+        <p class="msg msg-secondary" id="msg-secondary"></p>
+        <p class="msg msg-error" id="msg-error"></p>
+      </div>
     </div>
 
     <div class="coming">
@@ -457,7 +463,7 @@
   </main>
 
   <footer>
-    <p class="foot-copy">&copy; 2025 Adil Sher &mdash; Islamabad, PK.</p>
+    <p class="foot-copy">&copy; 2026 Adil Sher</p>
     <nav class="foot-links">
       <a href="https://github.com/adisher" target="_blank" rel="noopener">GitHub</a>
       <a href="https://linkedin.com/in/adilsher" target="_blank" rel="noopener">LinkedIn</a>
@@ -467,21 +473,37 @@
   <script>
     const input = document.getElementById('email-input');
     const btn = document.getElementById('submit-btn');
-    const ok = document.getElementById('msg-ok');
-    const err = document.getElementById('msg-err');
+    const msgPrimary = document.getElementById('msg-primary');
+    const msgSecondary = document.getElementById('msg-secondary');
+    const msgError = document.getElementById('msg-error');
 
     function validEmail(v) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
     }
 
+    function showMsg(el, text) {
+      el.textContent = text;
+      el.style.display = 'block';
+      // small delay so display:block renders before transition kicks in
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => el.classList.add('show'));
+      });
+    }
+
+    function resetMsgs() {
+      [msgPrimary, msgSecondary, msgError].forEach(el => {
+        el.classList.remove('show');
+        el.style.display = 'none';
+        el.textContent = '';
+      });
+    }
+
     btn.addEventListener('click', async () => {
-      ok.style.display = 'none';
-      err.style.display = 'none';
+      resetMsgs();
 
       const email = input.value.trim();
       if (!validEmail(email)) {
-        err.textContent = "That doesn't look like a valid email.";
-        err.style.display = 'block';
+        showMsg(msgError, "That doesn't look like a valid email.");
         input.focus();
         return;
       }
@@ -496,28 +518,37 @@
           body: JSON.stringify({ email }),
         });
 
+        const data = await res.json().catch(() => ({}));
+
         if (res.ok) {
-          ok.style.display = 'block';
           input.value = '';
-          btn.textContent = 'Done';
+          btn.textContent = "You're in";
+
+          // Stage 1 — instant banger
+          showMsg(msgPrimary, "🎉 You're on the list. First in line.");
+
+          // Stage 2 — email confirmation (only if API says it was sent)
+          if (data.emailSent) {
+            setTimeout(() => {
+              showMsg(msgSecondary, 'Check your inbox — a confirmation is on its way.');
+            }, 600);
+          }
+
         } else {
-          const data = await res.json().catch(() => ({}));
-          err.textContent = data.error || 'Something went wrong. Try again.';
-          err.style.display = 'block';
+          // API returned an error — show it but don't expose internals
+          showMsg(msgError, data.userMessage || 'Something went wrong. Try again.');
           btn.disabled = false;
-          btn.textContent = 'Notify me';
+          btn.textContent = "I'm in";
         }
+
       } catch {
-        err.textContent = 'Network error. Check your connection.';
-        err.style.display = 'block';
+        showMsg(msgError, 'Network error. Check your connection.');
         btn.disabled = false;
-        btn.textContent = 'Notify me';
+        btn.textContent = "I'm in";
       }
     });
 
     input.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
-
-
   </script>
 </body>
 
