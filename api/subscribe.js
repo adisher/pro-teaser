@@ -1,5 +1,5 @@
 // api/subscribe.js
-// 1. Saves email to Resend Contacts audience (always attempted)
+// 1. Saves email to Resend Contacts (always attempted)
 // 2. Sends confirmation email (attempted, never fails the response)
 // 3. Returns { ok, emailSent } so frontend can show staged messages
 
@@ -13,12 +13,11 @@ export default async function handler(req, res) {
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({
       error: 'Invalid email address.',
-      userMessage: 'That doesn\'t look like a valid email.',
+      userMessage: "That doesn't look like a valid email.",
     });
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const audienceId = process.env.RESEND_AUDIENCE_ID;
 
   if (!apiKey) {
     console.error('RESEND_API_KEY not set');
@@ -28,38 +27,28 @@ export default async function handler(req, res) {
     });
   }
 
-  // ── 1. Save to Resend Contacts ────────────────────────────────────────────
-  if (audienceId) {
-    try {
-      const contactRes = await fetch(
-        `https://api.resend.com/audiences/${audienceId}/contacts`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, unsubscribed: false }),
-        }
-      );
+  // 1. Save to Resend Contacts
+  try {
+    const contactRes = await fetch('https://api.resend.com/contacts', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, unsubscribed: false }),
+    });
 
-      if (!contactRes.ok) {
-        const body = await contactRes.json().catch(() => ({}));
-        if (contactRes.status !== 409) {
-          // 409 = already exists, not an error
-          console.error('Resend Contacts error:', body);
-        }
+    if (!contactRes.ok) {
+      const body = await contactRes.json().catch(() => ({}));
+      if (contactRes.status !== 409) {
+        console.error('Resend Contacts error:', body);
       }
-    } catch (err) {
-      // Don't fail the whole request if contact save fails
-      console.error('Resend Contacts exception:', err);
     }
-  } else {
-    console.warn('RESEND_AUDIENCE_ID not set — skipping contact save');
+  } catch (err) {
+    console.error('Resend Contacts exception:', err);
   }
 
-  // ── 2. Send confirmation email ────────────────────────────────────────────
-  // emailSent flag tells the frontend whether to show the confirmation line
+  // 2. Send confirmation email
   let emailSent = false;
 
   try {
@@ -83,19 +72,14 @@ export default async function handler(req, res) {
       emailSent = true;
     } else {
       const body = await emailRes.json().catch(() => ({}));
-      // Log the real error but don't surface it to the user
       console.error('Resend send error:', body);
     }
   } catch (err) {
     console.error('Resend send exception:', err);
   }
 
-  // ── 3. Always return success if contact was at least attempted ────────────
-  // The user is on the list regardless of whether the confirmation email sent
   return res.status(200).json({ ok: true, emailSent });
 }
-
-// ── HTML email ────────────────────────────────────────────────────────────────
 
 function confirmationHtml(email) {
   return `<!DOCTYPE html>
@@ -133,7 +117,7 @@ function confirmationHtml(email) {
         <tr>
           <td style="padding-bottom:36px;">
             <p style="margin:0 0 14px;font-size:14px;line-height:1.75;color:rgba(240,237,232,0.6);font-weight:300;">
-              You're on the list. When adilsher.pro goes live, you'll be the first to know — and the first to get access.
+              You're on the list. When adilsher.pro goes live, you'll be the first to know and the first to get access.
             </p>
             <p style="margin:0;font-size:14px;line-height:1.75;color:rgba(240,237,232,0.6);font-weight:300;">
               Portfolio. Blog. Indie projects. A sports corner that has no business existing but will anyway.
@@ -143,7 +127,7 @@ function confirmationHtml(email) {
 
         <tr>
           <td style="padding-top:24px;border-top:1px solid rgba(240,237,232,0.06);">
-            <p style="margin:0 0 4px;font-size:11px;color:rgba(240,237,232,0.2);">
+            <p style="margin:0;font-size:11px;color:rgba(240,237,232,0.2);">
               Signed up as <span style="color:rgba(240,237,232,0.4);">${email}</span>
             </p>
             <p style="margin:0;font-size:11px;color:rgba(240,237,232,0.15);">
@@ -159,8 +143,6 @@ function confirmationHtml(email) {
 </body>
 </html>`;
 }
-
-// ── Plain text fallback ───────────────────────────────────────────────────────
 
 function confirmationText(email) {
   return `You're first in line.
